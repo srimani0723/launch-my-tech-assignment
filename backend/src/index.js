@@ -17,5 +17,5 @@ app.use("/admin", adminsRoute);
 app.listen(PORT, async () => {
   console.log(`Server started at http://localhost:${PORT}`);
 
-  createTables();
+  await createTables();
 });
