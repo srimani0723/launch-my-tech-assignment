@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const signupNewAdmin = async (name, email, password, google_id = null) => {
   try {
     const admin = `SELECT * FROM admins WHERE email = $1`;
+
     const exist = await pool.query(admin, [email]);
 
     if (exist.rows[0]) {

@@ -18,22 +18,47 @@ const getPostsController = async (req, res) => {
   }
 };
 
+const getAdminPostsController = async (req, res) => {
+  try {
+    const { adminId } = req.params;
+    const result = await postsData.getAdminPosts(adminId);
+    if (result.message) {
+      return res.status(200).json(result);
+    }
+
+    if (result.length === 0) {
+      res.status(200).json({
+        message: "No posts available",
+      });
+    }
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({
+      error: `Failed to get posts: ${error}`,
+    });
+  }
+};
+
 const createPostController = async (req, res) => {
   try {
-    const { title, content, admin_id, image } = req.body;
+    const { title, content, image, admin_id } = req.body;
 
-    if (!title || !content || !admin_id) {
-      res.status(400).json({
-        message: "Provide title, content and admin_id missing!",
+    const imageUrl = req.imageUrl;
+
+    if (!title || !content || !admin_id || !imageUrl) {
+      return res.status(400).json({
+        message: "Provide title, content, image and admin_id missing!",
       });
     }
 
     const result = await postsData.createPost(
       title,
       content,
-      image ? image : null,
+      imageUrl,
       admin_id
     );
+
     res.status(200).json(result);
   } catch (error) {
     res.status(404).json({
@@ -46,10 +71,11 @@ const updatePostController = async (req, res) => {
   try {
     const { title, content, image, admin_id } = req.body;
     const { id } = req.params;
+    const imageUrl = req.imageUrl ? req.imageUrl : image;
 
     if (!id || !title || !content || !admin_id) {
-      res.status(400).json({
-        message: "Provide id, title, content and admin_id missing!",
+      return res.status(400).json({
+        message: "Provide id, title, content, image and admin_id missing!",
       });
     }
 
@@ -57,13 +83,13 @@ const updatePostController = async (req, res) => {
       id,
       title,
       content,
-      image ? image : null,
+      imageUrl,
       admin_id
     );
 
     res.status(200).json(result);
   } catch (error) {
-    res.status(404).json({
+    res.status(500).json({
       error: `Failed to update post: ${error}`,
     });
   }
@@ -72,6 +98,7 @@ const updatePostController = async (req, res) => {
 const deletePostController = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     const result = await postsData.deletePost(id);
     res.status(200).json(result);
   } catch (error) {
@@ -86,4 +113,5 @@ module.exports = {
   createPostController,
   updatePostController,
   deletePostController,
+  getAdminPostsController,
 };

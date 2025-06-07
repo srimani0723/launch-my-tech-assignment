@@ -3,7 +3,12 @@ const { v4: uuidv4 } = require("uuid");
 
 const getPosts = async () => {
   try {
-    const query = `select * from posts ORDER BY created_at DESC; `;
+    const query = `
+    SELECT posts.*,
+    admins.name AS admin_name
+    FROM posts
+    JOIN admins ON posts.admin_id = admins.id
+    ORDER BY created_at DESC; `;
     const result = await pool.query(query);
     return result.rows;
   } catch (error) {
@@ -11,10 +16,46 @@ const getPosts = async () => {
   }
 };
 
-const createPost = async (title, content, image = null, admin_id) => {
+const getAdminPosts = async (adminId) => {
   try {
-    const admin = `select * from admins where id = $1`;
-    const exist = await pool.query(admin, [admin_id]);
+    const adminCheck = `select * from admins where id = $1`;
+
+    const exist = await pool.query(adminCheck, [adminId]);
+
+    if (!exist.rows[0]) {
+      return {
+        message: "adminId Invalid!",
+      };
+    }
+
+    const query = `
+    SELECT
+    posts.id AS postId,
+    posts.admin_id AS adminsId,
+    posts.title,
+    posts.content,
+    posts.image,
+    posts.created_at AS createdAt,
+    admins.name,
+    admins.email,
+    admins.created_at AS adminCreatedAt
+    FROM posts
+    JOIN admins ON posts.admin_id = admins.id
+    WHERE admin_id = $1
+    ORDER BY posts.created_at DESC; `;
+    const result = await pool.query(query, [adminId]);
+
+    return result.rows;
+  } catch (error) {
+    console.log("PostsData Admin GET Error:", error);
+  }
+};
+
+const createPost = async (title, content, image, admin_id) => {
+  try {
+    const adminCheck = `select * from admins where id = $1`;
+
+    const exist = await pool.query(adminCheck, [admin_id]);
 
     if (!exist.rows[0]) {
       return {
@@ -79,7 +120,6 @@ const deletePost = async (id) => {
       WHERE id=$1
         `;
     const result = await pool.query(query, [id]);
-    console.log(result);
 
     return {
       message: "Successfully post deleted",
@@ -89,4 +129,10 @@ const deletePost = async (id) => {
   }
 };
 
-module.exports = { getPosts, createPost, updatePost, deletePost };
+module.exports = {
+  getPosts,
+  createPost,
+  updatePost,
+  deletePost,
+  getAdminPosts,
+};

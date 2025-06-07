@@ -5,12 +5,14 @@ const jwt = require("jsonwebtoken");
 const signupNewAdminController = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
     if (!password || !name || !email) {
       res.status(400).json({
         message: `Details Required`,
       });
     } else {
       const adminDb = await adminsData.signupNewAdmin(name, email, password);
+
       res.status(200).json(adminDb);
     }
   } catch (error) {
