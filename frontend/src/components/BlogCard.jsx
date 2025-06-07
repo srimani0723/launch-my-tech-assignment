@@ -3,7 +3,6 @@ import { FiUser } from "react-icons/fi";
 
 function BlogCard(props) {
     const { blog } = props
-    console.log(blog)
     const { adminName, image, title, content, createdAt } = blog
 
     const time = new Date(createdAt).toLocaleDateString("en-IN", {

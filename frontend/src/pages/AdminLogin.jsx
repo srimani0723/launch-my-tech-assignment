@@ -16,7 +16,7 @@ function AdminLogin() {
     const navigate = useNavigate()
 
     const token = Cookies.get("jwt_token")
-    const data = JSON.parse(Cookies.get("adminData"))
+    const data = Cookies.get("adminData") ? JSON.parse(Cookies.get("adminData")) : null
 
     if (token) {
         return <Navigate to={`/admin/dashboard/${String(data.id)}`
