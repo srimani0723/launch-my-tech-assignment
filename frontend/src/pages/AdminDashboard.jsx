@@ -11,6 +11,7 @@ import FailureView from '../components/FailureView';
 import axios from 'axios';
 import AdminBlogCard from '../components/AdminBlogCard';
 import BlogForm from '../components/BlogForm';
+import EmptyView from '../components/EmptyView';
 
 
 const apiStatusConstraints = {
@@ -45,9 +46,15 @@ function AdminDashboard() {
                 }
             }
             const response = await axios.get(url, headers)
-            console.log(response.data)
-            setAdminPosts(response.data)
-            setAdminApiGetStatus(apiStatusConstraints.success)
+
+            if (response.data.message) {
+                setAdminPosts([])
+                setAdminApiGetStatus(apiStatusConstraints.success)
+            } else {
+                setAdminPosts(response.data)
+                setAdminApiGetStatus(apiStatusConstraints.success)
+            }
+
         } catch (err) {
             setAdminErrorMsg(err.message)
             setAdminApiGetStatus(apiStatusConstraints.failure)
