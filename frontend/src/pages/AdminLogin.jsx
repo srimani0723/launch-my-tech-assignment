@@ -111,7 +111,7 @@ function AdminLogin() {
         <div className='bg-linear-65 from-sky-300 to-purple-300 h-[100vh] flex items-center justify-center'>
             <div className='flex flex-col w-[90%] md:w-[50%] max-w-[400px] rounded-2xl p-6 shadow-2xl shadow-pink-300 bg-linear-65 from-gray-50 to-sky-50 backdrop-blur-lg'>
 
-                <div className='flex items-center justify-between bg-linear-45 from-sky-500 to-purple-500 m-2 rounded-lg w-[60%] self-center shadow-lg mb-6 cursor-pointer' onClick={() => { setLogin(prev => !prev) }}>
+                <div className='flex items-center justify-between bg-linear-45 from-sky-500 to-purple-500 m-2 rounded-lg w-[100%] md:w-[60%] self-center shadow-lg mb-6 cursor-pointer' onClick={() => { setLogin(prev => !prev) }}>
 
                     <h1 className={`text-lg font-bold pb-1.5 pt-1 w-[90px] rounded-md text-center flex-1 m-1.5 ${login ? 'bg-white shadow-lg' : ''} ${login ? '' : 'text-white'}`}>Login</h1>
 
@@ -139,14 +139,15 @@ function AdminLogin() {
 
                     <div className='flex items-center w-full shadow-md rounded-md text-xl  border border-sky-300 outline-none mb-4'>
                         <input
-                            className='flex-1 outline-none p-3 rounded-md'
+                            className='outline-none p-3 rounded-md'
                             type={viewPass ? "text" : "password"}
                             name="password"
                             value={pass}
                             onChange={e => setPass(e.target.value)}
                             onFocus={() => { setErrorMsg("") }}
                             placeholder='Enter your Password' required />
-                        <button type='button' className='cursor-pointer pr-3'
+
+                        <button type='button' className='cursor-pointer pr-3 absolute right-7'
                             onClick={() => setViewPass(prev => !prev)}>
                             {viewPass ? <MdVisibilityOff /> : <MdVisibility />
                             }
