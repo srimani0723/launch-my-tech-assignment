@@ -45,7 +45,7 @@ function AdminDashboard() {
                 }
             }
             const response = await axios.get(url, headers)
-
+            console.log(response.data)
             setAdminPosts(response.data)
             setAdminApiGetStatus(apiStatusConstraints.success)
         } catch (err) {
