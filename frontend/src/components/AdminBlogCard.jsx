@@ -18,7 +18,7 @@ function AdminBlogCard(props) {
         console.log(jwtToken)
         try {
 
-            const url = `http://localhost:5001/post/${blog.postid}`
+            const url = `https://launch-my-tech-assignment.onrender.com/post/${blog.postid}`
 
             const headers = {
                 headers: {

@@ -23,6 +23,49 @@ function AdminLogin() {
         } replace />
     }
 
+    const handleGoogleLogin = async () => {
+        try {
+            /* Load One Tap only once */
+            const tokenClient = window.google.accounts.oauth2.initTokenClient({
+                client_id: '63384458418-oq2pppifropeb686bsro12u514vnpbtm.apps.googleusercontent.com',
+                scope: 'profile email',
+                callback: async (tokenResponse) => {
+                    const googleAccessToken = tokenResponse.access_token;
+
+                    const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                        headers: {
+                            Authorization: `Bearer ${googleAccessToken}`,
+                        },
+                    });
+
+                    const profile = await res.json();
+
+                    // Send to backend
+                    const backendRes = await fetch("https://launch-my-tech-assignment.onrender.com/auth/google", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ token: profile.sub }), // using sub as unique id
+                    });
+
+                    const data = await backendRes.json();
+                    if (data.jwtToken) {
+                        Cookies.set("jwt_token", data.jwtToken, { expires: 30 });
+                        Cookies.set("adminData", JSON.stringify(data.admin), { expires: 30 });
+                        navigate(`/admin/dashboard/${data.admin.id}`);
+                    } else {
+                        setErrorMsg("Google login failed");
+                    }
+                },
+            });
+
+            tokenClient.requestAccessToken();
+        } catch (err) {
+            console.error(err);
+            setErrorMsg("Error logging in with Google");
+        }
+    };
+
+
     const onSuccessfullLogin = (jwtToken, adminData) => {
         Cookies.set("jwt_token", jwtToken, { expires: 30 })
         Cookies.set("adminData", JSON.stringify(adminData), { expires: 30 })
@@ -32,7 +75,7 @@ function AdminLogin() {
     const handleSubmit = async (event) => {
         event.preventDefault()
         if (login) {
-            const url = "http://localhost:5001/admin/login/"
+            const url = "https://launch-my-tech-assignment.onrender.com/admin/login/"
             const adminDetails = {
                 email: email,
                 password: pass,
@@ -47,7 +90,7 @@ function AdminLogin() {
                 setErrorMsg(err.response.data.message)
             }
         } else {
-            const url = "http://localhost:5001/admin/signup/"
+            const url = "https://launch-my-tech-assignment.onrender.com/admin/signup/"
             const adminDetails = {
                 name: name,
                 email: email,
@@ -119,7 +162,7 @@ function AdminLogin() {
 
                 <p className='text-center text-md font-bold text-purple-600 mt-3'>Or</p>
 
-                <GoogleButton />
+                <GoogleButton onClick={handleGoogleLogin} />
 
                 <hr className="border-0 h-1 rounded bg-linear-45 from-sky-500 to-purple-500 animate-pulse my-3" />
 

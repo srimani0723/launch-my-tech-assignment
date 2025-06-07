@@ -4,6 +4,7 @@ const cors = require("cors");
 const db = require("./config/db");
 const adminsRoute = require("./routes/adminsRoute");
 const postsRoute = require("./routes/postsRoute");
+const googleRoute = require("./routes/googleRoute");
 const createTables = require("./config/tableInit");
 
 const app = express();
@@ -11,6 +12,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "supersecret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/auth", googleRoute);
+
 app.use("/", postsRoute);
 app.use("/admin", adminsRoute);
 

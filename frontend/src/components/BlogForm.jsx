@@ -33,8 +33,8 @@ function BlogForm({ adminId, isEdit = false, blogData = {}, onSuccess, setShowFo
         formData.append('image', image || prevImage); // Either new file or existing URL
 
         const url = isEdit
-            ? `http://localhost:5001/post/${blogData.postid}`
-            : `http://localhost:5001/post/`;
+            ? `https://launch-my-tech-assignment.onrender.com/post/${blogData.postid}`
+            : `https://launch-my-tech-assignment.onrender.com/post/`;
 
         const method = isEdit ? 'put' : 'post';
 

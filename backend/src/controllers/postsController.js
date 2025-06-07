@@ -5,7 +5,7 @@ const getPostsController = async (req, res) => {
     const result = await postsData.getPosts();
 
     if (result.length === 0) {
-      res.status(200).json({
+      return res.status(200).json({
         message: "No posts available",
       });
     }
@@ -27,7 +27,7 @@ const getAdminPostsController = async (req, res) => {
     }
 
     if (result.length === 0) {
-      res.status(200).json({
+      return res.status(200).json({
         message: "No posts available",
       });
     }

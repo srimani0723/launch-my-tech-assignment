@@ -7,7 +7,7 @@ const signupNewAdminController = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!password || !name || !email) {
-      res.status(400).json({
+      return res.status(400).json({
         message: `Details Required`,
       });
     } else {
@@ -27,7 +27,7 @@ const loginAdminController = async (req, res) => {
     const { email, password } = req.body;
 
     if (!password || !email) {
-      res.status(400).json({
+      return res.status(400).json({
         message: `Email and Password required`,
       });
     }
@@ -35,7 +35,7 @@ const loginAdminController = async (req, res) => {
     const result = await adminsData.loginAdmin(email, password);
 
     if (!result) {
-      res.status(400).json({
+      return res.status(400).json({
         message: `Invalid User Email and Password`,
       });
     } else {
@@ -49,7 +49,7 @@ const loginAdminController = async (req, res) => {
 
         const jwtToken = jwt.sign(payload, "MY_SECRET_TOKEN");
 
-        res.status(200).json({
+        return res.status(200).json({
           message: "Login Successful",
           jwtToken: jwtToken,
           admin: {

@@ -48,7 +48,7 @@ const App = () => {
 
   const getAllBlogs = async () => {
     setApiGetStatus(apiStatusConstraints.inProgress)
-    const url = "http://localhost:5001/"
+    const url = "https://launch-my-tech-assignment.onrender.com/"
     try {
       const response = await axios.get(url)
       const newData = convertKeysToCamel(response.data)

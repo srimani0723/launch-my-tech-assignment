@@ -9,7 +9,7 @@ const authenticateToken = (req, res, next) => {
   }
 
   if (jwtToken === undefined) {
-    res.status(401).json({
+    return res.status(401).json({
       message: "Invalid JWT Token",
     });
   } else {

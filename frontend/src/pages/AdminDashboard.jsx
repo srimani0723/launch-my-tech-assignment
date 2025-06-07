@@ -35,7 +35,7 @@ function AdminDashboard() {
     const getAllAdminBlogs = async () => {
         setAdminApiGetStatus(apiStatusConstraints.inProgress)
 
-        const url = `http://localhost:5001/post/${adminData.id}`
+        const url = `https://launch-my-tech-assignment.onrender.com/post/${adminData.id}`
 
         try {
             const headers = {
