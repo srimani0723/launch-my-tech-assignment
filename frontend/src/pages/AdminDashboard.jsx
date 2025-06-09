@@ -36,7 +36,7 @@ function AdminDashboard() {
     const getAllAdminBlogs = async () => {
         setAdminApiGetStatus(apiStatusConstraints.inProgress)
 
-        const url = `https://launch-my-tech-assignment.onrender.com/post/${adminData.id}`
+        const url = `${import.meta.env.VITE_LOCAL_BACKEND_URL}/post/${adminData.id}`
 
         try {
             const headers = {
@@ -72,18 +72,20 @@ function AdminDashboard() {
 
 
     const AdminProfile = () => (
-        <div className='flex flex-col items-center bg-sky-50 mb-3 rounded-lg md:flex-row w-full lg:w-[70%] lg:h-[30vh] justify-evenly'>
-            <span className='text-4xl md:text-8xl bg-linear-45 from-sky-500 to-purple-500 p-3 border-3 border-sky-400 rounded-full my-3 '><FiUser className='text-white' /></span>
+        <div className='flex flex-col items-center mb-3 rounded-4xl md:flex-row w-full lg:w-[70%] lg:h-[30vh] justify-evenly border-1 border-gray-400 shadow-lg/10 p-3 pr-2 bg-linear-30 from-purple-200 via-orange-100 to-sky-100'>
+            <div className='flex flex-col items-center md:flex-row bg-linear-45 from-sky-500 to-purple-500 p-3 rounded-4xl border-3 border-sky-300 '>
+                <span className='text-6xl md:text-8xl p-3 border-3 border-sky-200 rounded-full my-3 shadow-2xl/70 shadow-amber-200'><FiUser className='text-white' /></span>
 
-            <div className='flex flex-col bg-sky-100 rounded-lg p-3 text-lg md:text-xl font-semibold italic text-purple-900 border-2 border-gray-300'>
-                <h1><span className='font-bold'>Name:</span> {adminData.name}</h1>
-                <p><span className='font-bold'>Id:</span> {adminData.id}</p>
-                <p><span className='font-bold'>Email:</span> {adminData.email}</p>
-                <p><span className='font-bold'>CreatedAt:</span> {adminData.createdAt}</p>
+                <div className='flex flex-col rounded-lg p-3 text-lg md:text-xl font-semibold italic text-gray-200'>
+                    <h1><span className='font-bold text-white'>Name:</span> {adminData.name}</h1>
+                    <p><span className='font-bold text-white'>Id:</span> {adminData.id}</p>
+                    <p><span className='font-bold text-white'>Email:</span> {adminData.email}</p>
+                    <p><span className='font-bold text-white'>CreatedAt:</span> {adminData.createdAt}</p>
+                </div>
             </div>
 
-            <div className='flex md:flex-col  justify-between items-center  m-2'>
-                <button className="bg-gray-100 p-2 rounded-xl text-purple-800 hover:bg-gray-300 border-2 border-gray-300 mr-3 cursor-pointer flex items-center font-bold md:my-3"
+            <div className='flex md:flex-col  justify-between items-center m-2'>
+                <button className="bg-gray-100 p-2 rounded-xl text-purple-800 hover:bg-gray-300 border-2 border-gray-300 mr-3 cursor-pointer flex items-center font-bold md:my-3 shadow-xl/10"
 
                     onClick={getAllAdminBlogs}><IoReload className="text-xl font-bold mr-2" />Reload</button>
 
@@ -93,7 +95,7 @@ function AdminDashboard() {
                         setShowForm(prev => !prev);
                     }}
 
-                    className="bg-gray-100 p-2 rounded-xl text-purple-800 hover:bg-gray-300 border-2 border-gray-300 mr-3 cursor-pointer flex items-center font-bold md:my-3"><MdAdd className="text-xl font-bold mr-1"
+                    className="bg-gray-100 p-2 rounded-xl text-purple-800 hover:bg-gray-300 border-2 border-gray-300 mr-3 cursor-pointer flex items-center font-bold md:my-3 shadow-xl/10"><MdAdd className="text-xl font-bold mr-1"
                     />New Blog</button>
             </div>
         </div>

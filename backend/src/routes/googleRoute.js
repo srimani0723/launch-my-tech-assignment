@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 // Trigger Google OAuth login
 router.get(
-  "/google",
+  "/login/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 

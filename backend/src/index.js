@@ -1,7 +1,7 @@
 const express = require("express");
 const PORT = require("./config/port");
 const cors = require("cors");
-const db = require("./config/db");
+const passport = require("./config/passport");
 const adminsRoute = require("./routes/adminsRoute");
 const postsRoute = require("./routes/postsRoute");
 const googleRoute = require("./routes/googleRoute");
@@ -13,16 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "supersecret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/auth", googleRoute);
 

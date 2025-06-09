@@ -5,6 +5,7 @@ import { MdVisibilityOff } from "react-icons/md";
 import Cookies from "js-cookie";
 import { Navigate, useNavigate } from 'react-router-dom';
 import GoogleButton from '../assets/GoogleIcon';
+import { FaArrowLeft } from "react-icons/fa";
 
 function AdminLogin() {
     const [login, setLogin] = useState(true)
@@ -65,6 +66,15 @@ function AdminLogin() {
         }
     };
 
+    const handleGoogle = async () => {
+        const res = await axios.get(`${import.meta.process.VITE_LOCAL_BACKEND_URL}/auth/login / google`)
+        console.log(res)
+    }
+
+    const onClickHome = () => {
+        navigate("/")
+    }
+
 
     const onSuccessfullLogin = (jwtToken, adminData) => {
         Cookies.set("jwt_token", jwtToken, { expires: 30 })
@@ -75,7 +85,8 @@ function AdminLogin() {
     const handleSubmit = async (event) => {
         event.preventDefault()
         if (login) {
-            const url = "https://launch-my-tech-assignment.onrender.com/admin/login/"
+            const url = `${import.meta.env.VITE_LOCAL_BACKEND_URL}/admin/login/`
+
             const adminDetails = {
                 email: email,
                 password: pass,
@@ -90,7 +101,7 @@ function AdminLogin() {
                 setErrorMsg(err.response.data.message)
             }
         } else {
-            const url = "https://launch-my-tech-assignment.onrender.com/admin/signup/"
+            const url = `${import.meta.env.VITE_LOCAL_BACKEND_URL}/admin/signup/`
             const adminDetails = {
                 name: name,
                 email: email,
@@ -109,16 +120,18 @@ function AdminLogin() {
 
     return (
         <div className='bg-linear-65 from-sky-300 to-purple-300 h-[100vh] flex items-center justify-center'>
-            <div className='flex flex-col w-[90%] md:w-[50%] max-w-[400px] rounded-2xl p-6 shadow-2xl shadow-pink-300 bg-linear-65 from-gray-50 to-sky-50 backdrop-blur-lg'>
+            <div className='flex flex-col w-[90%] md:w-[50%] max-w-[400px] rounded-2xl p-6 shadow-2xl shadow-pink-300 bg-linear-65 from-gray-50 to-sky-50 backdrop-blur-lg items-start'>
 
-                <div className='flex items-center justify-between bg-linear-45 from-sky-500 to-purple-500 m-2 rounded-lg w-[100%] md:w-[60%] self-center shadow-lg mb-6 cursor-pointer' onClick={() => { setLogin(prev => !prev) }}>
+
+
+                <div className='flex items-center justify-between bg-linear-45 from-sky-500 to-purple-500 m-2 rounded-lg w-full md:w-[60%] self-center shadow-lg mb-6 cursor-pointer' onClick={() => { setLogin(prev => !prev) }}>
 
                     <h1 className={`text-lg font-bold pb-1.5 pt-1 w-[90px] rounded-md text-center flex-1 m-1.5 ${login ? 'bg-white shadow-lg' : ''} ${login ? '' : 'text-white'}`}>Login</h1>
 
                     <h1 className={`text-lg font-bold pb-1.5 pt-1 flex-1 m-1.5 w-[90px] rounded-md text-center ${!login ? 'bg-white shadow-lg' : ''} ${!login ? '' : 'text-white'}`}>SignUp</h1>
                 </div>
 
-                <form className='' onSubmit={handleSubmit}>
+                <form className='w-full' onSubmit={handleSubmit}>
                     {!login && <input
                         className='w-full shadow-md rounded-md text-xl p-3 border border-sky-300 outline-none mb-4'
                         type="text"
@@ -130,7 +143,7 @@ function AdminLogin() {
 
                     <input
                         className='w-full shadow-md rounded-md text-xl p-3 border border-sky-300 outline-none mb-4'
-                        type="text"
+                        type="email"
                         name="email"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
@@ -139,7 +152,7 @@ function AdminLogin() {
 
                     <div className='flex items-center w-full shadow-md rounded-md text-xl  border border-sky-300 outline-none mb-4'>
                         <input
-                            className='outline-none p-3 rounded-md'
+                            className='outline-none p-3 rounded-md w-[90%]'
                             type={viewPass ? "text" : "password"}
                             name="password"
                             value={pass}
@@ -161,16 +174,22 @@ function AdminLogin() {
                     {errorMsg === "" ? null : <p className='text-center text-sm font-semibold text-red-800 mt-1'>{errorMsg}</p>}
                 </form>
 
-                <p className='text-center text-md font-bold text-purple-600 mt-3'>Or</p>
+                <p className='text-center text-md font-bold text-purple-600 mt-3 w-full'>Or</p>
 
-                <GoogleButton onClick={handleGoogleLogin} />
+                <div className='w-full text-center'>
+                    <GoogleButton onClick={handleGoogle} />
+                </div>
 
-                <hr className="border-0 h-1 rounded bg-linear-45 from-sky-500 to-purple-500 animate-pulse my-3" />
+                <hr className="border-0 h-1 rounded bg-linear-45 from-sky-500 to-purple-500 animate-pulse my-4 w-full" />
 
-                <button className='text-purple-800 animate-pulse font-bold cursor-pointer' onClick={() => { setLogin(prev => !prev) }}>
+                <button className='text-purple-800 animate-pulse font-bold cursor-pointer mb-3 w-full' onClick={() => { setLogin(prev => !prev) }}>
                     {
                         login ? "Didn't have Account, Create One" : "Already Have Account"
                     }
+                </button>
+
+                <button className='font-semibold p-2.5 text-sm rounded-xl cursor-pointer flex items-center text-blue-500 hover:bg-gray-200 mt-2 border-gray-400 hover:border '
+                    onClick={onClickHome}><FaArrowLeft className="text-sm md:text-md mr-2" />Back to Home
                 </button>
             </div>
         </div>

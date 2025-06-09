@@ -45,10 +45,14 @@ const App = () => {
   const [allBlogs, setAllBlogs] = useState([])
   const [errorMsg, setErrorMsg] = useState(null)
   const [apiGetStatus, setApiGetStatus] = useState(apiStatusConstraints.initial)
+  const [pageNo, setPageNo] = useState(1)
 
   const getAllBlogs = async () => {
     setApiGetStatus(apiStatusConstraints.inProgress)
-    const url = "https://launch-my-tech-assignment.onrender.com/"
+    const url = `${import.meta.env.VITE_LOCAL_BACKEND_URL}/`
+
+    console.log(url)
+
     try {
       const response = await axios.get(url)
       const newData = convertKeysToCamel(response.data)
@@ -68,11 +72,20 @@ const App = () => {
     setSearchTxt(e.target.value);
   }
 
+  const pageIncrement = () => {
+    setPageNo(prev => prev + 1)
+  }
+
+  const pageDecrement = () => {
+    setPageNo(prev => prev - 1)
+  }
+
   return (
-    <BlogsContext.Provider value={{ allBlogs, searchTxt, errorMsg, apiGetStatus, searchBlog, getAllBlogs }}>
+    <BlogsContext.Provider value={{ allBlogs, searchTxt, errorMsg, apiGetStatus, pageNo, searchBlog, getAllBlogs, pageIncrement, pageDecrement }}>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/blogs" element={<Home />} />
 
           <Route path="/admin/login" element={<AdminLogin />} />
 

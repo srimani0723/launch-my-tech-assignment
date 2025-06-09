@@ -12,15 +12,15 @@ function BlogCard(props) {
     })
 
     return (
-        <div className='flex flex-col  w-[100%] sm:w-[90%] md:w-[45%] lg:w-[30%] rounded-xl m-3 shadow-md hover:shadow-xl hover:scale-102 duration-500 cursor-pointer' >
+        <div className='flex flex-col w-full md:w-[47%] lg:w-[30%] rounded-xl shadow-md hover:shadow-xl hover:scale-101 duration-500 cursor-pointer border-1 border-gray-300 hover:border-gray-400 mr-1 mb-3' >
 
-            <img src={image} alt={title} className='w-full h-[50%] object-fill rounded-t-xl min-h-[200px] max-h-[250px] ' />
+            <img src={image} alt={title} className='w-full h-[50%] object-fill rounded-t-xl min-h-[200px]' />
 
-            <div className="p-3 ">
-                <div className='flex justify-between items-center mb-3 bg-purple-100 p-2 rounded-lg'>
-                    <p className="font-semibold text-sm  flex items-center"><CiCalendar className="mr-1 font-bold text-md" />{time}</p>
+            <div className="p-3 bg-white rounded-b-xl">
+                <div className='flex justify-between items-center mb-3 bg-purple-50 p-2 rounded-lg border border-purple-300'>
+                    <p className="font-semibold text-sm  flex items-center"><CiCalendar className="mr-1 font-bold text-xl text-blue-700 " />{time}</p>
 
-                    <p className="font-semibold text-sm flex items-center"><FiUser className="mr-2" />{adminName}</p>
+                    <p className="font-semibold text-sm flex items-center"><FiUser className="mr-2 text-xl text-green-600" />{adminName}</p>
                 </div>
 
                 <p className="text-gray-900 font-bold text-xl mb-3">{title}</p>

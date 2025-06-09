@@ -5,8 +5,11 @@ const BlogsContext = createContext({
   searchTxt: "",
   errorMsg: "",
   apiGetStatus: "",
+  pageNo: 1,
   searchBlog: () => { },
   getAllBlogs: () => { },
+  pageIncrement: () => { },
+  pageDecrement: () => { }
 });
 
 export default BlogsContext;
