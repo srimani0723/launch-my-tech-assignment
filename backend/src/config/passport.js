@@ -27,7 +27,7 @@ passport.use(
         const newId = uuidv4();
         const insertRes = await pool.query(
           "INSERT INTO admins (id, name, email, google_id) VALUES ($1, $2, $3, $4)",
-          [newId, name, email, googleId]
+          [newId, name, email, newId]
         );
         return done(null, insertRes.rows[0]);
       } catch (err) {
