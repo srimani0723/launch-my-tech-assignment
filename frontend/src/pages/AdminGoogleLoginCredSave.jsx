@@ -13,9 +13,10 @@ function AdminGoogleLoginCredSave() {
         const name = params.get("name");
         const email = params.get("email");
         const createdAt = params.get("createdAt")
+        const loginType = params.get("loginType")
 
         const adminData = {
-            id, name, email, createdAt
+            id, name, email, createdAt, loginType
         }
 
         if (jwtToken && id) {

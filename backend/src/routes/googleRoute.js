@@ -32,7 +32,8 @@ router.get(
       `&id=${user.id}` +
       `&name=${encodeURIComponent(user.name)}` +
       `&email=${user.email}` +
-      `&createdAt=${encodeURIComponent(user.created_at)}`;
+      `&createdAt=${encodeURIComponent(user.created_at)}` +
+      `&loginType=google`;
 
     res.redirect(redirectURL);
   }

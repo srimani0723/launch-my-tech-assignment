@@ -8,9 +8,12 @@ const AdminNavbar = () => {
     const navigate = useNavigate()
 
     const onAdminLogout = async () => {
+        const adminData = Cookies.get("adminData")
         Cookies.remove("jwt_token")
         Cookies.remove("adminData")
-        await axios.get(`${import.meta.env.VITE_DATABASE_URL}/auth/logout`)
+        if (adminData.loginType === "google") {
+            await axios.get(`${import.meta.env.VITE_DATABASE_URL}/auth/logout`)
+        }
         navigate("/")
     }
 
