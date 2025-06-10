@@ -7,6 +7,7 @@ import AdminLogin from "./pages/AdminLogin"
 import AdminDashboard from "./pages/AdminDashboard"
 import NotFound from "./components/NotFound"
 import ProtectedRoute from "./middlewares/protectedRoute"
+import AdminGoogleLoginCredSave from "./pages/AdminGoogleLoginCredSave"
 
 function toCamelCase(str) {
   const parts = str.split(/[_-]/);
@@ -49,9 +50,7 @@ const App = () => {
 
   const getAllBlogs = async () => {
     setApiGetStatus(apiStatusConstraints.inProgress)
-    const url = `${import.meta.env.VITE_LOCAL_BACKEND_URL}/`
-
-    console.log(url)
+    const url = `${import.meta.env.VITE_BACKEND_URL}/`
 
     try {
       const response = await axios.get(url)
@@ -88,6 +87,8 @@ const App = () => {
           <Route path="/blogs" element={<Home />} />
 
           <Route path="/admin/login" element={<AdminLogin />} />
+
+          <Route path='/admin/google-login' element={<AdminGoogleLoginCredSave />} />
 
           <Route path="/admin/dashboard/:adminId" element={<ProtectedRoute element={<AdminDashboard />} />} />
 

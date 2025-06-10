@@ -18,7 +18,7 @@ function AdminBlogCard(props) {
         console.log(jwtToken)
         try {
 
-            const url = `${import.meta.env.VITE_LOCAL_BACKEND_URL}/post/${blog.postid}`
+            const url = `${import.meta.env.VITE_BACKEND_URL}/post/${blog.postid}`
 
             const headers = {
                 headers: {

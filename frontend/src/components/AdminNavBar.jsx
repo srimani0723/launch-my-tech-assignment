@@ -1,17 +1,16 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { IoReload } from "react-icons/io5";
-import { LuSparkles } from "react-icons/lu";
-import { FiUser } from "react-icons/fi";
 import { MdOutlineLogout } from "react-icons/md";
 import { FaArrowLeft } from "react-icons/fa";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 const AdminNavbar = () => {
     const navigate = useNavigate()
 
-    const onAdminLogout = () => {
+    const onAdminLogout = async () => {
         Cookies.remove("jwt_token")
         Cookies.remove("adminData")
+        await axios.get(`${import.meta.env.VITE_DATABASE_URL}/auth/logout`)
         navigate("/")
     }
 

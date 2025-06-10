@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { IoReload } from "react-icons/io5";
-import { LuSparkles } from "react-icons/lu";
 import { MdAdd } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import Cookies from "js-cookie"
@@ -33,10 +32,16 @@ function AdminDashboard() {
     const jwtToken = Cookies.get("jwt_token")
     const adminData = JSON.parse(Cookies.get("adminData"))
 
+    const time = new Date(adminData.createdAt).toLocaleDateString("en-IN", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    })
+
     const getAllAdminBlogs = async () => {
         setAdminApiGetStatus(apiStatusConstraints.inProgress)
 
-        const url = `${import.meta.env.VITE_LOCAL_BACKEND_URL}/post/${adminData.id}`
+        const url = `${import.meta.env.VITE_BACKEND_URL}/post/${adminData.id}`
 
         try {
             const headers = {
@@ -73,14 +78,14 @@ function AdminDashboard() {
 
     const AdminProfile = () => (
         <div className='flex flex-col items-center mb-3 rounded-4xl md:flex-row w-full lg:w-[70%] lg:h-[30vh] justify-evenly border-1 border-gray-400 shadow-lg/10 p-3 pr-2 bg-linear-30 from-purple-200 via-orange-100 to-sky-100'>
-            <div className='flex flex-col items-center md:flex-row bg-linear-45 from-sky-500 to-purple-500 p-3 rounded-4xl border-3 border-sky-300 '>
+            <div className='flex flex-col items-center md:flex-row bg-linear-45 from-sky-500 to-purple-500 p-3 rounded-4xl border-3 border-sky-300 h-full w-full'>
                 <span className='text-6xl md:text-8xl p-3 border-3 border-sky-200 rounded-full my-3 shadow-2xl/70 shadow-amber-200'><FiUser className='text-white' /></span>
 
                 <div className='flex flex-col rounded-lg p-3 text-lg md:text-xl font-semibold italic text-gray-200'>
                     <h1><span className='font-bold text-white'>Name:</span> {adminData.name}</h1>
                     <p><span className='font-bold text-white'>Id:</span> {adminData.id}</p>
                     <p><span className='font-bold text-white'>Email:</span> {adminData.email}</p>
-                    <p><span className='font-bold text-white'>CreatedAt:</span> {adminData.createdAt}</p>
+                    <p><span className='font-bold text-white'>CreatedAt:</span> {time}</p>
                 </div>
             </div>
 

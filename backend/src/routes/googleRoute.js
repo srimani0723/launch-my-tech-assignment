@@ -1,49 +1,57 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("../config/passport");
+const passport = require("passport");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 // Trigger Google OAuth login
 router.get(
-  "/login/google",
+  "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 // Google OAuth callback
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login-failed" }),
+  passport.authenticate("google", {
+    failureRedirect: `${process.env.FRONTEND_URL}/admin/login`,
+  }),
   (req, res) => {
     const user = req.user;
 
-    // Create JWT token payload
     const payload = {
       id: user.id,
       email: user.email,
     };
 
-    // Sign JWT token (set expiry as you want)
-    const token = jwt.sign(payload, "MY_SECRET_TOKEN", {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(payload, "MY_SECRET_TOKEN");
 
-    // Send response with token + user info
-    res.status(200).json({
-      message: "Login Successful",
-      jwtToken: token,
-      admin: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: user.created_at,
-      },
-    });
+    const redirectURL =
+      `${process.env.FRONTEND_URL}/admin/google-login` +
+      `?token=${token}` +
+      `&id=${user.id}` +
+      `&name=${encodeURIComponent(user.name)}` +
+      `&email=${user.email}` +
+      `&createdAt=${encodeURIComponent(user.created_at)}`;
+
+    res.redirect(redirectURL);
   }
 );
 
-// Failure route
-router.get("/login-failed", (req, res) => {
-  res.status(401).json({ message: "Google login failed" });
+router.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error("Logout Error:", err);
+      return res.status(500).json({
+        message: "Logout failed",
+      });
+    }
+
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid");
+      res.redirect(`${process.env.FRONTEND_URL}/admin/login`);
+    });
+  });
 });
 
 module.exports = router;
