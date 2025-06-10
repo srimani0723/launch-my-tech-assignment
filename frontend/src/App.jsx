@@ -47,6 +47,8 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState(null)
   const [apiGetStatus, setApiGetStatus] = useState(apiStatusConstraints.initial)
   const [pageNo, setPageNo] = useState(1)
+  const [searchVal, setSearchVal] = useState("")
+  const [filteredBlogs, setFilteredBlogs] = useState([])
 
   const getAllBlogs = async () => {
     setApiGetStatus(apiStatusConstraints.inProgress)
@@ -56,6 +58,7 @@ const App = () => {
       const response = await axios.get(url)
       const newData = convertKeysToCamel(response.data)
       setAllBlogs(newData)
+      setFilteredBlogs(newData)
       setApiGetStatus(apiStatusConstraints.success)
     } catch (err) {
       setErrorMsg(err.message)
@@ -66,6 +69,16 @@ const App = () => {
   useEffect(() => {
     getAllBlogs();
   }, [])
+
+  const searchInput = (e) => {
+    console.log(e.target.value)
+    setSearchVal(e.target.value)
+  }
+  const handleSearchInput = (e) => {
+    e.preventDefault()
+    const filteredList = allBlogs.filter(each => each.content.toLowerCase().includes(searchVal.toLowerCase()))
+    setFilteredBlogs(filteredList)
+  }
 
   const searchBlog = (e) => {
     setSearchTxt(e.target.value);
@@ -80,7 +93,7 @@ const App = () => {
   }
 
   return (
-    <BlogsContext.Provider value={{ allBlogs, searchTxt, errorMsg, apiGetStatus, pageNo, searchBlog, getAllBlogs, pageIncrement, pageDecrement }}>
+    <BlogsContext.Provider value={{ allBlogs, filteredBlogs, searchTxt, errorMsg, apiGetStatus, pageNo, searchVal, searchBlog, getAllBlogs, pageIncrement, pageDecrement, searchInput, handleSearchInput }}>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />

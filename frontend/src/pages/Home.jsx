@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import Navbar from "../components/Navbar";
 import BlogsContext from '../context/BlogsContext';
 import CircleLoader from '../components/CircleLoader';
@@ -18,19 +18,8 @@ const apiStatusConstraints = {
 }
 
 const Home = () => {
-    const { allBlogs, apiGetStatus, pageNo, pageIncrement, pageDecrement } = useContext(BlogsContext)
-    const [searchVal, setSearchVal] = useState("")
-    const [filteredBlogs, setFilteredBlogs] = useState([...allBlogs])
+    const { allBlogs, apiGetStatus, pageNo, pageIncrement, pageDecrement, searchVal, searchInput, filteredBlogs, handleSearchInput } = useContext(BlogsContext)
 
-    const onChangeInput = (e) => {
-        setSearchVal(e.target.value)
-    }
-
-    const onHandleSearch = (e) => {
-        e.preventDefault()
-        const filteredList = allBlogs.filter(each => each.content.toLowerCase().includes(searchVal.toLowerCase()))
-        setFilteredBlogs(filteredList)
-    }
 
     const renderBlogCards = () => {
 
@@ -42,9 +31,9 @@ const Home = () => {
 
         const filteredList = filteredBlogs.slice(start, end)
 
-        const showCards = filteredList.length <= 0
+        const showCards = filteredList.length > 0
 
-        return showCards ? (
+        return !showCards ? (
             <EmptyView />
         ) :
             (<><ul className='pt-4 lg:w-[70%] pb-4 flex flex-wrap justify-evenly items-start'>
@@ -96,15 +85,15 @@ const Home = () => {
                     Explore cutting-edge insights, tutorials, and trends in technology, design, and development
                 </p>
 
-                <form className='mb-4 mt-6 w-full md:w-[100%] max-w-[400px] bg-white shadow-xl/80 shadow-sky-200 p-2 px-5 text-xl rounded-full flex items-center justify-between sticky' onSubmit={onHandleSearch}>
+                <form className='mb-4 mt-6 w-full md:w-[100%] max-w-[500px] bg-white shadow-xl/80 shadow-sky-200 p-2 px-5 text-xl rounded-full flex items-center justify-between' onSubmit={() => handleSearchInput()}>
 
                     <input type='search'
-                        className=' outline-none  flex-1 mr-2'
+                        className='outline-none  mr-2 w-[90%]'
                         placeholder='Search for a Blog'
-                        onChange={onChangeInput}
+                        onChange={(e) => searchInput(e)}
                         value={searchVal} />
 
-                    <button type='button' className='cursor-pointer' onClick={onHandleSearch}><FaSearch /></button>
+                    <button type='button' className='cursor-pointer' onClick={handleSearchInput}><FaSearch /></button>
                 </form>
             </div>
 
