@@ -85,7 +85,7 @@ const Home = () => {
                     Explore cutting-edge insights, tutorials, and trends in technology, design, and development
                 </p>
 
-                <form className='mb-4 mt-6 w-full md:w-[100%] max-w-[500px] bg-white shadow-xl/80 shadow-sky-200 p-2 px-5 text-xl rounded-full flex items-center justify-between' onSubmit={() => handleSearchInput()}>
+                <form className='mb-4 mt-6 w-full md:w-[100%] max-w-[500px] bg-white shadow-xl/80 shadow-sky-200 p-2 px-5 text-xl rounded-full flex items-center justify-between' onSubmit={(e) => handleSearchInput(e)}>
 
                     <input type='search'
                         className='outline-none  mr-2 w-[90%]'
