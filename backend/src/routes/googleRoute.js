@@ -19,6 +19,8 @@ router.get(
   (req, res) => {
     const user = req.user;
 
+    console.log(user);
+
     const payload = {
       id: user.id,
       email: user.email,

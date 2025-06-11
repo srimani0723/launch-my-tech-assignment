@@ -17,21 +17,24 @@ passport.use(
         const name = profile.displayName;
         const email = profile.emails[0].value;
 
-        const res = await pool.query(
-          "SELECT * FROM admins WHERE google_id = $1",
-          [googleId]
-        );
+        const res = await pool.query("SELECT * FROM admins WHERE email = $1", [
+          email,
+        ]);
 
         if (res.rows.length) return done(null, res.rows[0]);
 
-        const newId = uuidv4();
         const insertRes = await pool.query(
           "INSERT INTO admins (id, name, email, google_id) VALUES ($1, $2, $3, $4)",
-          [newId, name, email, newId]
+          [uuidv4(), name, email, googleId]
         );
-        return done(null, insertRes.rows[0]);
+
+        const data = await pool.query("SELECT * FROM admins WHERE email = $1", [
+          email,
+        ]);
+
+        return done(null, data.rows[0]);
       } catch (err) {
-        done(err, null);
+        done(`Passport Error:${err}`, null);
       }
     }
   )
