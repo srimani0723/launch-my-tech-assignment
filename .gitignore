@@ -1,0 +1,10 @@
+# launch-my-tech-assignment
+node_modules
+package-lock.json
+.env
+
+# backend
+backend/node_modules
+backend/package-lock.json
+backend/.env
+
